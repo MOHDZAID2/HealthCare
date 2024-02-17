@@ -80,7 +80,7 @@ String[][] doctor_details = {};
             doctor_details = doctor_details2;
         else
         if(tittle.compareTo("Dentist") == 0)
-            doctor_details = doctor_details3;
+            doctor_details = Doctor_details3;
         else
         if(tittle.compareTo("Surgen") == 0)
             doctor_details = doctor_details4;
