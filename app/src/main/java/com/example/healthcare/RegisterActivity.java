@@ -15,7 +15,6 @@ public class RegisterActivity extends AppCompatActivity {
     Button btn;
     TextView tv;
     Database db; // Declare the Database instance
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
