@@ -29,7 +29,7 @@ public class LoginActivity extends AppCompatActivity {
         tv = findViewById(R.id.textViewNewUser);
 
         // Initialize the database in the onCreate method
-        db = new Database(this);
+        db = new Database(this, "healthcare", null, 1);
 
         btn.setOnClickListener(new View.OnClickListener() {
             @Override

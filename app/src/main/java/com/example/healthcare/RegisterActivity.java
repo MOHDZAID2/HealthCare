@@ -27,7 +27,7 @@ public class RegisterActivity extends AppCompatActivity {
         btn = findViewById(R.id.buttonRegLogin);
         tv = findViewById(R.id.textViewExistingUser);
 
-        db = new Database(this); // Initialize the Database instance
+        db = new Database(this, "healthcare", null, 1); // Initialize the Database instance
 
         tv.setOnClickListener(new View.OnClickListener() {
             @Override
