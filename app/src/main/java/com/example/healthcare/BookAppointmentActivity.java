@@ -1,70 +1,89 @@
 package com.example.healthcare;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.os.Bundle;
-import android.widget.Toast;
+import android.view.View;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.TimePicker;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.Calendar;
+import java.util.Locale;
 
-public class BookAppointmentActivity extends AppCompatActivity {
+public class BookAppointmentActivity extends AppCompatActivity implements
+        DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
+
+    EditText ed1, ed2, ed3, ed4;
+    Button dateButton, timeButton;
+    private DatePickerDialog datePickerDialog;
+    private TimePickerDialog timePickerDialog;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_appointement);
 
-        // Get date strings from your intent or wherever you are getting them
-        String fromDateStr = getIntent().getStringExtra("fromDate");
-        String toDateStr = getIntent().getStringExtra("toDate");
+        // Your existing initialization code
 
-        if (fromDateStr != null && toDateStr != null) {
-            // Format the date strings correctly
-            SimpleDateFormat inputFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-            SimpleDateFormat outputFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
+        dateButton = findViewById(R.id.buttonAppDate);
+        timeButton = findViewById(R.id.buttonAppTime);
 
-            try {
-                Date fromDate = inputFormat.parse(fromDateStr);
-                Date toDate = inputFormat.parse(toDateStr);
+        // Existing code...
 
-                // Format the dates to the desired format for comparison
-                fromDateStr = outputFormat.format(fromDate);
-                toDateStr = outputFormat.format(toDate);
-
-                // Check if the date range is valid
-                if (isDateRangeValid(fromDateStr, toDateStr)) {
-                    // Your logic if the date range is valid
-                    Toast.makeText(this, "Date range is valid", Toast.LENGTH_SHORT).show();
-                } else {
-                    // Your logic if the date range is not valid
-                    Toast.makeText(this, "Invalid date range", Toast.LENGTH_SHORT).show();
-                }
-            } catch (ParseException e) {
-                e.printStackTrace();
+        dateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDatePickerDialog();
             }
-        } else {
-            // Handle the case where fromDateStr or toDateStr is null
-            Toast.makeText(this, "Invalid date strings", Toast.LENGTH_SHORT).show();
-        }
+        });
+
+        timeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showTimePickerDialog();
+            }
+        });
     }
 
-    // Your existing isDateRangeValid method remains the same
-    private boolean isDateRangeValid(String fromDateStr, String toDateStr) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
+    private void showDatePickerDialog() {
+        // Get the current date
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
 
-        try {
-            Date fromDate = dateFormat.parse(fromDateStr);
-            Date toDate = dateFormat.parse(toDateStr);
+        // Initialize DatePickerDialog
+        datePickerDialog = new DatePickerDialog(this, this, year, month, dayOfMonth);
+        datePickerDialog.show();
+    }
 
-            // Check if fromDate is before toDate
-            return fromDate.before(toDate);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            // Handle parsing exception
-            return false;
-        }
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        // Handle the selected date
+        String selectedDate = dayOfMonth + "/" + (month + 1) + "/" + year;
+        dateButton.setText(selectedDate);
+    }
+
+    private void showTimePickerDialog() {
+        // Get the current time
+        Calendar calendar = Calendar.getInstance();
+        int hourOfDay = calendar.get(Calendar.HOUR_OF_DAY);
+        int minute = calendar.get(Calendar.MINUTE);
+
+        // Initialize TimePickerDialog
+        timePickerDialog = new TimePickerDialog(this, this, hourOfDay, minute, true);
+        timePickerDialog.show();
+    }
+
+    @Override
+    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+        // Handle the selected time
+        String selectedTime = String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minute);
+        timeButton.setText(selectedTime);
     }
 }
