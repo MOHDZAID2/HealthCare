@@ -1,6 +1,16 @@
 package com.example.healthcare;
 
+import android.app.AlertDialog;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -8,63 +18,122 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class BookAppointmentActivity extends AppCompatActivity {
+
+    EditText ed1,ed2,ed3,ed4;
+    TextView tv;
+    private DatePickerDialog datePickerDialog;
+    private TimePickerDialog timePickerDialog;
+    private Button dateButton,timeButton,btnBook,btnBack;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_appointement);
 
-        // Get date strings from your intent or wherever you are getting them
-        String fromDateStr = getIntent().getStringExtra("fromDate");
-        String toDateStr = getIntent().getStringExtra("toDate");
+        tv = findViewById(R.id.textViewAppTitle);
+        ed1 = findViewById(R.id.editTextAppFullName);
+        ed2 = findViewById(R.id.editTextAppAddress);
+        ed3 = findViewById(R.id.editTextAppContactNumber);
+        ed4 = findViewById(R.id.editTextAppFee);
+        dateButton = findViewById(R.id.buttonAppDate);
+        timeButton = findViewById(R.id.buttonAppTime);
+        btnBook = findViewById(R.id.buttonBookAppointment);
+        btnBack = findViewById(R.id.buttonAppBack);
 
-        if (fromDateStr != null && toDateStr != null) {
-            // Format the date strings correctly
-            SimpleDateFormat inputFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-            SimpleDateFormat outputFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
 
-            try {
-                Date fromDate = inputFormat.parse(fromDateStr);
-                Date toDate = inputFormat.parse(toDateStr);
+        ed1.setKeyListener(null);
+        ed2.setKeyListener(null);
+        ed3.setKeyListener(null);
+        ed4.setKeyListener(null);
 
-                // Format the dates to the desired format for comparison
-                fromDateStr = outputFormat.format(fromDate);
-                toDateStr = outputFormat.format(toDate);
+        Intent it = getIntent();
+        String title = it.getStringExtra("text1");
+        String fullname = it.getStringExtra("text2");
+        String address = it.getStringExtra("text3");
+        String contact = it.getStringExtra("text4");
+        String fees = it.getStringExtra("text5");
 
-                // Check if the date range is valid
-                if (isDateRangeValid(fromDateStr, toDateStr)) {
-                    // Your logic if the date range is valid
-                    Toast.makeText(this, "Date range is valid", Toast.LENGTH_SHORT).show();
-                } else {
-                    // Your logic if the date range is not valid
-                    Toast.makeText(this, "Invalid date range", Toast.LENGTH_SHORT).show();
-                }
-            } catch (ParseException e) {
-                e.printStackTrace();
+        tv.setText(title);
+        ed1.setText(fullname);
+        ed2.setText(address);
+        ed3.setText(contact);
+        ed4.setText("coin fees:" + fees + "/-");
+
+        //datepicker
+        initDatepicker();
+
+        dateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                datePickerDialog.show();
             }
-        } else {
-            // Handle the case where fromDateStr or toDateStr is null
-            Toast.makeText(this, "Invalid date strings", Toast.LENGTH_SHORT).show();
-        }
+        });
+
+        //timepicker
+        initTimePicker();
+        timeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                timePickerDialog.show();
+
+            }
+        });
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(BookAppointmentActivity.this,FindDoctorActivity.class));
+
+            }
+        });
+
+        btnBook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
     }
 
-    // Your existing isDateRangeValid method remains the same
-    private boolean isDateRangeValid(String fromDateStr, String toDateStr) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
+    private void initDatepicker(){
+        DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
 
-        try {
-            Date fromDate = dateFormat.parse(fromDateStr);
-            Date toDate = dateFormat.parse(toDateStr);
+                i1 = i1+1;
+               dateButton.setText(i2+"/"+i1+"/"+i);
+            }
+        };
+        Calendar cal = Calendar.getInstance();
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int day = cal.get(Calendar.DAY_OF_MONTH);
 
-            // Check if fromDate is before toDate
-            return fromDate.before(toDate);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            // Handle parsing exception
-            return false;
-        }
+        int style = AlertDialog.THEME_HOLO_DARK;
+        datePickerDialog = new DatePickerDialog(this,style,dateSetListener,year,month,day);;
+        datePickerDialog.getDatePicker().setMinDate(cal.getTimeInMillis()+86400000);
+    }
+
+    private void initTimePicker(){
+
+        TimePickerDialog.OnTimeSetListener timeSetListener = new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker timePicker, int i, int i1) {
+               timeButton.setText(i+":"+i1);
+
+            }
+        };
+
+        Calendar cal = Calendar.getInstance();
+        int hrs = cal.get(Calendar.HOUR);
+        int mins = cal.get(Calendar.MINUTE);
+
+        int style = AlertDialog.THEME_HOLO_DARK;
+        timePickerDialog = new TimePickerDialog(this,style,timeSetListener,hrs,mins,true);
     }
 }

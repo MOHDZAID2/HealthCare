@@ -34,7 +34,7 @@ public class LabTestActivity extends AppCompatActivity {
                       "Liver Function Test",
             "Blood Glucose Fasting",
             "COVID-19 Antibody - IgG",
-            "Thyroid profile-Total (T3, T4 & TSH Ultra-sensittive)",
+            "Thyroid profile-Total (T3, T4 & TSH Ultra-sensitive)",
             "Complete Hemogram\n" +
                     "CRP (C Reactive Protein) Quantitative, Serum\n" +
                     " Iron Studies\n" +
