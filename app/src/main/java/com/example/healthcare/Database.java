@@ -27,6 +27,7 @@ public class Database extends SQLiteOpenHelper {
                 + "password TEXT)";
         db.execSQL(createTable);
     }
+    //update
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
