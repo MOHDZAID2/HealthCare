@@ -2,21 +2,22 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
-    tools:context=".RegisterActivity">
+    tools:context=".LabTestBookActivity">
 
     <EditText
-        android:id="@+id/editTextRegPassword"
+        android:id="@+id/editTextLTBPinCode"
         android:layout_width="294dp"
         android:layout_height="46dp"
         android:layout_marginTop="304dp"
         android:background="@drawable/input_bg"
-        android:drawableLeft="@drawable/ic_baseline_security_24"
+        android:drawableLeft="@drawable/ic_baseline_person_24"
         android:drawablePadding="10dp"
         android:ems="10"
-        android:hint="Password"
+        android:hint="Pin Code"
         android:inputType="textPassword"
         android:textColorHint="#fff"
         android:paddingLeft="20dp"
@@ -32,7 +33,7 @@
         app:layout_constraintVertical_bias="0.136" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/editTextLTBHealthcare"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="24*7 Healthcare"
@@ -48,19 +49,18 @@
 
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/editTextLTBPleaseFILL"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Registration"
-        android:textColor="#fff"
-        android:textSize="34sp"
+        android:text="Please Fill All Details for Booking"
+        android:textColor="#CDDC39"
+        android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.205" />
-
+        app:layout_constraintVertical_bias="0.169" />
 
     <EditText
         android:id="@+id/editTextLTBFullName"
@@ -70,7 +70,7 @@
         android:drawableLeft="@drawable/ic_baseline_person_24"
         android:drawablePadding="10dp"
         android:ems="10"
-        android:hint="User Name"
+        android:hint="Full Name"
         android:inputType="text"
         android:paddingLeft="20dp"
         android:paddingTop="10dp"
@@ -86,14 +86,14 @@
         app:layout_constraintVertical_bias="0.323" />
 
     <EditText
-        android:id="@+id/editTextRegEmail"
+        android:id="@+id/editTextLTBAddress"
         android:layout_width="292dp"
         android:layout_height="50dp"
         android:background="@drawable/input_bg"
-        android:drawableLeft="@drawable/ic_baseline_email_24"
+        android:drawableLeft="@drawable/ic_baseline_security_24"
         android:drawablePadding="10dp"
         android:ems="10"
-        android:hint="Email"
+        android:hint="Address"
         android:inputType="textEmailAddress"
         android:paddingLeft="20dp"
         android:paddingTop="10dp"
@@ -109,16 +109,16 @@
         app:layout_constraintVertical_bias="0.417" />
 
     <EditText
-        android:id="@+id/editTextRegConfirmPassword"
+        android:id="@+id/editTextLTBContactNumber"
         android:layout_width="294dp"
         android:layout_height="46dp"
         android:layout_marginTop="304dp"
         android:background="@drawable/input_bg"
-        android:drawableLeft="@drawable/ic_baseline_security_24"
+        android:drawableLeft="@drawable/ic_baseline_email_24"
         android:drawablePadding="10dp"
         android:ems="10"
-        android:hint="Confirm Password"
-        android:inputType="textPassword"
+        android:hint="Contact Number"
+        android:inputType="textEmailAddress"
         android:textColorHint="#fff"
         android:paddingLeft="20dp"
         android:paddingTop="10dp"
@@ -133,12 +133,12 @@
         app:layout_constraintVertical_bias="0.33" />
 
     <Button
-        android:id="@+id/buttonRegLogin"
+        android:id="@+id/buttonLTBBooking"
         android:layout_width="292dp"
 
         android:layout_height="52dp"
         android:layout_marginTop="420dp"
-        android:text="Login"
+        android:text="Book"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.462"
@@ -146,17 +146,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.409" />
 
-    <TextView
-        android:id="@+id/textViewExistingUser"
-        android:layout_width="170dp"
-        android:layout_height="18dp"
-        android:text= "Already have an account"
-        android:textColor="#F6F5F5"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.842" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

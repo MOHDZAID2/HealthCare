@@ -1,89 +1,139 @@
 package com.example.healthcare;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Locale;
+import java.util.Date;
 
-public class BookAppointmentActivity extends AppCompatActivity implements
-        DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
+public class BookAppointmentActivity extends AppCompatActivity {
 
-    EditText ed1, ed2, ed3, ed4;
-    Button dateButton, timeButton;
+    EditText ed1,ed2,ed3,ed4;
+    TextView tv;
     private DatePickerDialog datePickerDialog;
     private TimePickerDialog timePickerDialog;
+    private Button dateButton,timeButton,btnBook,btnBack;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_appointement);
 
-        // Your existing initialization code
-
+        tv = findViewById(R.id.textViewAppTitle);
+        ed1 = findViewById(R.id.editTextAppFullName);
+        ed2 = findViewById(R.id.editTextAppAddress);
+        ed3 = findViewById(R.id.editTextAppContactNumber);
+        ed4 = findViewById(R.id.editTextAppFee);
         dateButton = findViewById(R.id.buttonAppDate);
         timeButton = findViewById(R.id.buttonAppTime);
+        btnBook = findViewById(R.id.buttonBookAppointment);
+        btnBack = findViewById(R.id.buttonAppBack);
 
-        // Existing code...
+
+        ed1.setKeyListener(null);
+        ed2.setKeyListener(null);
+        ed3.setKeyListener(null);
+        ed4.setKeyListener(null);
+
+        Intent it = getIntent();
+        String title = it.getStringExtra("text1");
+        String fullname = it.getStringExtra("text2");
+        String address = it.getStringExtra("text3");
+        String contact = it.getStringExtra("text4");
+        String fees = it.getStringExtra("text5");
+
+        tv.setText(title);
+        ed1.setText(fullname);
+        ed2.setText(address);
+        ed3.setText(contact);
+        ed4.setText("coin fees:" + fees + "/-");
+
+        //datepicker
+        initDatepicker();
 
         dateButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                showDatePickerDialog();
+            public void onClick(View view) {
+                datePickerDialog.show();
             }
         });
 
+        //timepicker
+        initTimePicker();
         timeButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                showTimePickerDialog();
+            public void onClick(View view) {
+                timePickerDialog.show();
+
             }
         });
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(BookAppointmentActivity.this,FindDoctorActivity.class));
+
+            }
+        });
+
+        btnBook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
     }
 
-    private void showDatePickerDialog() {
-        // Get the current date
-        Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
-        int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+    private void initDatepicker(){
+        DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
 
-        // Initialize DatePickerDialog
-        datePickerDialog = new DatePickerDialog(this, this, year, month, dayOfMonth);
-        datePickerDialog.show();
+                i1 = i1+1;
+               dateButton.setText(i2+"/"+i1+"/"+i);
+            }
+        };
+        Calendar cal = Calendar.getInstance();
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+
+        int style = AlertDialog.THEME_HOLO_DARK;
+        datePickerDialog = new DatePickerDialog(this,style,dateSetListener,year,month,day);;
+        datePickerDialog.getDatePicker().setMinDate(cal.getTimeInMillis()+86400000);
     }
 
-    @Override
-    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        // Handle the selected date
-        String selectedDate = dayOfMonth + "/" + (month + 1) + "/" + year;
-        dateButton.setText(selectedDate);
-    }
+    private void initTimePicker(){
 
-    private void showTimePickerDialog() {
-        // Get the current time
-        Calendar calendar = Calendar.getInstance();
-        int hourOfDay = calendar.get(Calendar.HOUR_OF_DAY);
-        int minute = calendar.get(Calendar.MINUTE);
+        TimePickerDialog.OnTimeSetListener timeSetListener = new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker timePicker, int i, int i1) {
+               timeButton.setText(i+":"+i1);
 
-        // Initialize TimePickerDialog
-        timePickerDialog = new TimePickerDialog(this, this, hourOfDay, minute, true);
-        timePickerDialog.show();
-    }
+            }
+        };
 
-    @Override
-    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        // Handle the selected time
-        String selectedTime = String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minute);
-        timeButton.setText(selectedTime);
+        Calendar cal = Calendar.getInstance();
+        int hrs = cal.get(Calendar.HOUR);
+        int mins = cal.get(Calendar.MINUTE);
+
+        int style = AlertDialog.THEME_HOLO_DARK;
+        timePickerDialog = new TimePickerDialog(this,style,timeSetListener,hrs,mins,true);
     }
 }
