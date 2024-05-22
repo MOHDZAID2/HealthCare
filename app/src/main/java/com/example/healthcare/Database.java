@@ -12,15 +12,18 @@ import java.util.ArrayList;
 
 public class Database extends SQLiteOpenHelper {
 
+
     private static final String DATABASE_NAME = "healthcare.db";
     private static final int DATABASE_VERSION = 1;
 
-    public Database(@Nullable Context context) {
+    public Database(@Nullable Context context, String healthcare, Object o, int i) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+
+
         // Create the "user" table
         String createTable = "CREATE TABLE IF NOT EXISTS user ("
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -35,6 +38,7 @@ public class Database extends SQLiteOpenHelper {
         String qry3 = "create table orderplace(username text,fullname text,address text,contactno text,pincode int,date text,time text,amount float,otype text)";
         db.execSQL(qry3);
     }
+    //update
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -64,82 +68,87 @@ public class Database extends SQLiteOpenHelper {
         db.close();
         return result;
     }
-
-    public void addCart(String userName, String product, float price, String otype) {
+    public void addCart(String userName, String product,float price,String otype){
         ContentValues cv = new ContentValues();
-        cv.put("username", userName);
-        cv.put("product", product);
-        cv.put("price", price);
-        cv.put("otype", otype);
+        cv.put("username",userName);
+        cv.put("product",product);
+        cv.put("price",price);
+        cv.put("otype",otype);
         SQLiteDatabase db = getWritableDatabase();
-        db.insert("cart", null, cv);
+        db.insert("cart",null,cv);
         db.close();
-    }
 
-    public int checkCart(String username, String product) {
-        int result = 0;
-        String[] str = new String[]{username, product};
+    }
+    public int checkCart(String username,String product){
+        int result=0;
+        String str[] = new String[2];
+        str[0] = username;
+        str[1] = product;
         SQLiteDatabase db = getReadableDatabase();
-        Cursor c = db.rawQuery("select * from cart where username = ? and product = ?", str);
-        if (c.moveToFirst()) {
+        Cursor c = db.rawQuery("select * from cart where username = ? and product = ?",str );
+        if(c.moveToFirst()){
             result = 1;
         }
-        c.close();
         db.close();
         return result;
     }
 
-    public void removeCart(String username, String otype) {
-        String[] str = new String[]{username, otype};
+    public  void removeCart(String username,String otype){
+        String str[] = new String[2];
+        str[0] = username;
+        str[1] = otype;
         SQLiteDatabase db = getWritableDatabase();
-        db.delete("cart", "username=? and otype=?", str);
+        db.delete("cart","username? and otype=?",str);
         db.close();
     }
 
-    public ArrayList<String> getCartData(String username, String otype) {
+    public ArrayList getCartData(String username, String otype){
         ArrayList<String> arr = new ArrayList<>();
         SQLiteDatabase db = getReadableDatabase();
-        String[] str = new String[]{username, otype};
-        Cursor c = db.rawQuery("select * from cart where username = ? and otype = ?", str);
-        if (c.moveToFirst()) {
+        String str[] = new String[2];
+        str[0] = username;
+        str[1] = otype;
+        Cursor c = db.rawQuery("select * from cart where username = ? and otype = ?",str);
+        if (c.moveToFirst()){
             do {
                 String product = c.getString(1);
                 String price = c.getString(2);
-                arr.add(product + "$" + price);
-            } while (c.moveToNext());
+                arr.add(product+"$"+price);
+            }while(c.moveToNext());
         }
-        c.close();
         db.close();
         return arr;
     }
 
-    public void addOrder(String username, String fullname, String address, String contact, int pincode, String date, String time, float price, String otype) {
+    public void addOrder(String username,String fullname,String address,String contact,int pincode,String date,String time,float price,String otype){
         ContentValues cv = new ContentValues();
-        cv.put("username", username);
-        cv.put("fullname", fullname);
-        cv.put("address", address);
-        cv.put("contact", contact);
-        cv.put("pincode", pincode);
-        cv.put("date", date);
-        cv.put("time", time);
-        cv.put("amount", price);
-        cv.put("otype", otype);
+        cv.put("username",username);
+        cv.put("fullname",fullname);
+        cv.put("address",address);
+        cv.put("contact",contact);
+        cv.put("pincode",pincode);
+        cv.put("date",date);
+        cv.put("time",time);
+        cv.put("amount",price);
+        cv.put("otype",otype);
         SQLiteDatabase db = getWritableDatabase();
-        db.insert("orderplace", null, cv);
+        db.insert("orderplace",null,cv);
         db.close();
+
     }
 
-    public ArrayList<String> getOrderData(String username) {
+    public ArrayList getOrderData(String username){
         ArrayList<String> arr = new ArrayList<>();
         SQLiteDatabase db = getReadableDatabase();
-        String[] str = new String[]{username};
-        Cursor c = db.rawQuery("select * from orderplace where username = ?", str);
-        if (c.moveToFirst()) {
+        String str[] = new String[1];
+        str[0] = username;
+        Cursor c = db.rawQuery("select * from orderplace where username = ?",str);
+        if (c.moveToFirst()){
             do {
-                arr.add(c.getString(1) + "$" + c.getString(2) + "$" + c.getString(3) + "$" + c.getString(4) + "$" + c.getString(5) + "$" + c.getString(6) + "$" + c.getString(7));
-            } while (c.moveToNext());
+                arr.add(c.getString(1)+"$"+c.getString(3)+"$"+c.getString(3)+"$"+c.getString(4)+"$"+c.getString(5)+"$"+c.getString(6)+"$"+c.getString(7));
+
+            }while (c.moveToNext());
         }
-        c.close();
         db.close();
         return arr;
     }
