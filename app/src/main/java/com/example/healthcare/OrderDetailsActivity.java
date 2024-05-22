@@ -27,7 +27,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
     SimpleAdapter sa;
     ListView lst;
     Button btn;
-    // Orderdetails
+    // Orderdetailskkl
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
