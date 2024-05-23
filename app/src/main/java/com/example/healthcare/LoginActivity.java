@@ -13,10 +13,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class LoginActivity extends AppCompatActivity {
-   EditText edUserName, edPassword;
+    EditText edUserName, edPassword;
     Button btn;
     TextView tv;
-    CartLabActivity.Database db;
+    Database db; // Use the correct reference to the Database class
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,12 +29,11 @@ public class LoginActivity extends AppCompatActivity {
         tv = findViewById(R.id.textViewNewUser);
 
         // Initialize the database in the onCreate method
-       db = new CartLabActivity.Database(this, "healthcare", null, 1);
+        db = new Database(this); // Correctly initialize the Database instance
 
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 String userName = edUserName.getText().toString();
                 String password = edPassword.getText().toString();
 
@@ -61,13 +60,11 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-       tv.setOnClickListener(new View.OnClickListener() {
+        tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
             }
         });
-
-
     }
 }

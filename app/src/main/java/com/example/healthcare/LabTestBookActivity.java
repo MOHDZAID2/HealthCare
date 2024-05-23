@@ -48,7 +48,9 @@ public class LabTestBookActivity extends AppCompatActivity {
                 SharedPreferences sharedPreferences = getSharedPreferences("shared prefs", Context.MODE_PRIVATE);
                 String username = sharedPreferences.getString("username","").toString();
 
-                CartLabActivity.Database db = new CartLabActivity.Database(getApplicationContext(),"healthcare",null,1);
+                //CartLabActivity.Database db = new CartLabActivity.Database(getApplicationContext(),"healthcare",null,1);
+                Database db = new Database(getApplicationContext());
+
                 db.addOrder(username,edname.getText().toString(),edaddres.getText().toString(),edcontact.getText().toString(),Integer.parseInt(edpincode.getText().toString()),date.toString(),time.toString(),Float.parseFloat(price[1].toString()),"lab");
                 db.removeCart(username,"lab");
                 Toast.makeText(LabTestBookActivity.this, "Your booking is done successfully", Toast.LENGTH_SHORT).show();

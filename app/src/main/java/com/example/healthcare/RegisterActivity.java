@@ -1,7 +1,6 @@
 package com.example.healthcare;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -14,7 +13,8 @@ public class RegisterActivity extends AppCompatActivity {
     EditText edUserName, edMail, edConfirm, edPassword;
     Button btn;
     TextView tv;
-    CartLabActivity.Database db; // Declare the Database instance
+    Database db; // Declare the Database instance
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,7 +27,7 @@ public class RegisterActivity extends AppCompatActivity {
         btn = findViewById(R.id.buttonRegLogin);
         tv = findViewById(R.id.textViewExistingUser);
 
-        db = new CartLabActivity.Database(this, "healthcare", null, 1); // Initialize the Database instance
+        db = new Database(this); // Initialize the Database instance
 
         tv.setOnClickListener(new View.OnClickListener() {
             @Override

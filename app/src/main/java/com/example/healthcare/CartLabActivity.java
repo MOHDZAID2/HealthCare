@@ -1,17 +1,12 @@
 package com.example.healthcare;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -48,9 +43,10 @@ public class CartLabActivity extends AppCompatActivity {
         lst = findViewById(R.id.listViewCart);
 
         SharedPreferences sharedPreferences = getSharedPreferences("shared_prefs", Context.MODE_PRIVATE);
-        String username = sharedPreferences.getString("username", "").toString();
+        String username = sharedPreferences.getString("username", "");
 
-        Database db = new Database(getApplicationContext(), "healthcare", null, 1);
+        // Update this line to use the correct Database constructor
+        Database db = new Database(getApplicationContext());
 
         float totalAmount = 0;
         ArrayList<String> dbData = db.getCartData(username, "lab");
@@ -64,10 +60,10 @@ public class CartLabActivity extends AppCompatActivity {
             packages[i][1] = ""; // Set appropriate value
             packages[i][2] = ""; // Set appropriate value
             packages[i][3] = ""; // Set appropriate value
-            packages[i][4] = "cost : " + strData[1] + "/-";
+            packages[i][4] = "Cost : " + strData[1] + "/-";
             totalAmount += Float.parseFloat(strData[1]);
         }
-        tvTotal.setText("Total Cost " + totalAmount);
+        tvTotal.setText("Total Cost: " + totalAmount);
 
         list = new ArrayList<>();
 
@@ -88,22 +84,19 @@ public class CartLabActivity extends AppCompatActivity {
         lst.setAdapter(sa);
         btnBack.setOnClickListener(v -> startActivity(new Intent(CartLabActivity.this, LabTestActivity.class)));
 
-        btnCheckout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent it = new Intent(CartLabActivity.this,LabTestBookActivity.class);
-                it.putExtra("price",tvTotal.getText());
-                it.putExtra("date",dateButton.getText());
-                it.putExtra("time",timeButton.getText());
-                startActivity(it);
-
-            }
+        btnCheckout.setOnClickListener(v -> {
+            Intent it = new Intent(CartLabActivity.this, LabTestBookActivity.class);
+            it.putExtra("price", tvTotal.getText());
+            it.putExtra("date", dateButton.getText());
+            it.putExtra("time", timeButton.getText());
+            startActivity(it);
         });
+
         // Initialize DatePickerDialog
         datePickerDialog = new DatePickerDialog(
                 this,
                 (view, year, month, dayOfMonth) -> {
-                    // Handle date selection
+                    dateButton.setText(dayOfMonth + "/" + (month + 1) + "/" + year);
                 },
                 Calendar.getInstance().get(Calendar.YEAR),
                 Calendar.getInstance().get(Calendar.MONTH),
@@ -114,7 +107,7 @@ public class CartLabActivity extends AppCompatActivity {
         timePickerDialog = new TimePickerDialog(
                 this,
                 (view, hourOfDay, minute) -> {
-                    // Handle time selection
+                    timeButton.setText(hourOfDay + ":" + minute);
                 },
                 Calendar.getInstance().get(Calendar.HOUR_OF_DAY),
                 Calendar.getInstance().get(Calendar.MINUTE),
@@ -122,7 +115,7 @@ public class CartLabActivity extends AppCompatActivity {
         );
 
         // Set onClickListener for date and time pickers
-        findViewById(R.id.buttonCartDate).setOnClickListener(v -> datePickerDialog.show());
-        findViewById(R.id.buttonCartTime).setOnClickListener(v -> timePickerDialog.show());
+        dateButton.setOnClickListener(v -> datePickerDialog.show());
+        timeButton.setOnClickListener(v -> timePickerDialog.show());
     }
 }

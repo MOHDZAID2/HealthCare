@@ -15,8 +15,8 @@ import android.widget.Toast;
 public class LabTestDetailsActivity extends AppCompatActivity {
 
     EditText edDetails;
-    TextView tvPackageName,tvTotalCost;
-    Button btnAddToCart,btnBack;
+    TextView tvPackageName, tvTotalCost;
+    Button btnAddToCart, btnBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,12 +34,12 @@ public class LabTestDetailsActivity extends AppCompatActivity {
         Intent intent = getIntent();
         tvPackageName.setText(intent.getStringExtra("text1"));
         edDetails.setText(intent.getStringExtra("text2"));
-        tvTotalCost.setText("Total Cost : "+intent.getStringExtra("text3")+"/-");
+        tvTotalCost.setText("Total Cost : " + intent.getStringExtra("text3") + "/-");
 
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(LabTestDetailsActivity.this,LabTestActivity.class));
+                startActivity(new Intent(LabTestDetailsActivity.this, LabTestActivity.class));
             }
         });
 
@@ -47,19 +47,18 @@ public class LabTestDetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 SharedPreferences sharedPreferences = getSharedPreferences("shared_prefs", Context.MODE_PRIVATE);
-                String username = sharedPreferences.getString("username","").toString();
+                String username = sharedPreferences.getString("username", "").toString();
                 String product = tvPackageName.getText().toString();
                 float price = Float.parseFloat(intent.getStringExtra("text3").toString());
 
-                CartLabActivity.Database db = new CartLabActivity.Database(getApplicationContext(),"healthcare",null,1);
+                Database db = new Database(getApplicationContext()); // Correctly initialize the Database instance
 
-                if(db.checkCart(username,product)==1){
+                if (db.checkCart(username, product) == 1) {
                     Toast.makeText(LabTestDetailsActivity.this, "Product Already Added", Toast.LENGTH_SHORT).show();
-                }else{
-                    db.addCart(username,product,price,"lab");
+                } else {
+                    db.addCart(username, product, price, "lab");
                     Toast.makeText(LabTestDetailsActivity.this, "Record Inserted to cart", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(LabTestDetailsActivity.this,LabTestActivity.class));
-
+                    startActivity(new Intent(LabTestDetailsActivity.this, LabTestActivity.class));
                 }
             }
         });

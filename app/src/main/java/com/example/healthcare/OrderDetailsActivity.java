@@ -23,11 +23,10 @@ public class OrderDetailsActivity extends AppCompatActivity {
     private String[][] order_details = {};
 
     HashMap<String,String> item;
-    ArrayList list;
+    ArrayList<HashMap<String, String>> list;
     SimpleAdapter sa;
     ListView lst;
     Button btn;
-    // Orderdetailskkl
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,51 +45,47 @@ public class OrderDetailsActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(OrderDetailsActivity.this,HomeActivity.class));
+                startActivity(new Intent(OrderDetailsActivity.this, HomeActivity.class));
             }
         });
 
-        CartLabActivity.Database db = new CartLabActivity.Database(getApplicationContext(),"healthcare",null,1);
+        Database db = new Database(getApplicationContext()); // Initialize the Database instance correctly
         SharedPreferences sharedPreferences = getSharedPreferences("shared_prefs", Context.MODE_PRIVATE);
-        String username = sharedPreferences.getString("username","").toString();
-        ArrayList dbData = db.getOrderData(username);
+        String username = sharedPreferences.getString("username", "");
+
+        ArrayList<String> dbData = db.getOrderData(username);
 
         order_details = new String[dbData.size()][];
-        for (int i=0;i<order_details.length;i++){
+        for (int i = 0; i < order_details.length; i++) {
             order_details[i] = new String[5];
-            String arrData = dbData.get(i).toString();
+            String arrData = dbData.get(i);
             String[] strData = arrData.split(java.util.regex.Pattern.quote("$"));
             order_details[i][0] = strData[0];
             order_details[i][1] = strData[1]; //+" "+strData[3];
-            if (strData[7].compareTo("medicine")==0){
-                order_details[i][3] = "Del:" +strData[4];
-
-            }else {
+            if (strData[7].compareTo("medicine") == 0) {
+                order_details[i][3] = "Del:" + strData[4];
+            } else {
                 order_details[i][3] = "Del:" + strData[4] + " " + strData[5];
             }
-            order_details[i][2] = "Rs."+strData[6];
+            order_details[i][2] = "Rs." + strData[6];
             order_details[i][4] = strData[7];
-
         }
 
-        list = new ArrayList();
-        for (int i =0;i<order_details.length;i++){
-            item = new HashMap<String,String>();
-            item.put("line1",order_details[i][0]);
-            item.put("line2",order_details[i][1]);
-            item.put("line3",order_details[i][2]);
-            item.put("line4",order_details[i][3]);
-            item.put("line5",order_details[i][4]);
-
+        list = new ArrayList<>();
+        for (String[] order_detail : order_details) {
+            item = new HashMap<>();
+            item.put("line1", order_detail[0]);
+            item.put("line2", order_detail[1]);
+            item.put("line3", order_detail[2]);
+            item.put("line4", order_detail[3]);
+            item.put("line5", order_detail[4]);
             list.add(item);
-
         }
 
-        sa = new SimpleAdapter(this,list,
+        sa = new SimpleAdapter(this, list,
                 R.layout.multi_lines,
-                new String[] { "line1","line2","line3","line4","line5"},
-                new int[] {R.id.line_a,R.id.line_b,R.id.line_c,R.id.line_d,R.id.line_e});
+                new String[]{"line1", "line2", "line3", "line4", "line5"},
+                new int[]{R.id.line_a, R.id.line_b, R.id.line_c, R.id.line_d, R.id.line_e});
         lst.setAdapter(sa);
-
     }
 }
