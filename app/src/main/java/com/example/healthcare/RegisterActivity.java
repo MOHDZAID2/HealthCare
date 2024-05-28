@@ -20,14 +20,14 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        edUserName = findViewById(R.id.editTextLTBFullName);
+        edUserName = findViewById(R.id.editTextBMBFullName);
         edMail = findViewById(R.id.editTextRegEmail);
         edConfirm = findViewById(R.id.editTextRegConfirmPassword);
         edPassword = findViewById(R.id.editTextRegPassword);
         btn = findViewById(R.id.buttonRegLogin);
         tv = findViewById(R.id.textViewExistingUser);
 
-        db = new Database(this); // Initialize the Database instance
+        db = new Database(this, "healthcare", null, 1); // Initialize the Database instance
 
         tv.setOnClickListener(new View.OnClickListener() {
             @Override

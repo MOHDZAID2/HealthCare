@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -42,23 +41,18 @@ public class OrderDetailsActivity extends AppCompatActivity {
         btn = findViewById(R.id.buttonODBack);
         lst = findViewById(R.id.listViewOD);
 
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(OrderDetailsActivity.this, HomeActivity.class));
-            }
-        });
+        btn.setOnClickListener(v -> startActivity(new Intent(OrderDetailsActivity.this, HomeActivity.class)));
 
-        Database db = new Database(getApplicationContext()); // Initialize the Database instance correctly
+        Database db = new Database(getApplicationContext(), "healthcare", null, 1); // Initialize the Database instance correctly
         SharedPreferences sharedPreferences = getSharedPreferences("shared_prefs", Context.MODE_PRIVATE);
-        String username = sharedPreferences.getString("username", "");
+        String username = sharedPreferences.getString("username", "").toString();
 
-        ArrayList<String> dbData = db.getOrderData(username);
+        ArrayList dbData = db.getOrderData(username);
 
         order_details = new String[dbData.size()][];
         for (int i = 0; i < order_details.length; i++) {
             order_details[i] = new String[5];
-            String arrData = dbData.get(i);
+            String arrData = dbData.get(i).toString();
             String[] strData = arrData.split(java.util.regex.Pattern.quote("$"));
             order_details[i][0] = strData[0];
             order_details[i][1] = strData[1]; //+" "+strData[3];
@@ -72,13 +66,14 @@ public class OrderDetailsActivity extends AppCompatActivity {
         }
 
         list = new ArrayList<>();
-        for (String[] order_detail : order_details) {
-            item = new HashMap<>();
-            item.put("line1", order_detail[0]);
-            item.put("line2", order_detail[1]);
-            item.put("line3", order_detail[2]);
-            item.put("line4", order_detail[3]);
-            item.put("line5", order_detail[4]);
+        for (int i=0;i<order_details.length;i++) {
+            item = new HashMap<String,String>();
+            item.put("line1",order_details[i][0]);
+            item.put("line2",order_details[i][1]);
+            item.put("line3",order_details[i][2]);
+            item.put("line4",order_details[i][3]);
+            item.put("line5",order_details[i][4]);
+
             list.add(item);
         }
 

@@ -3,35 +3,24 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
-    tools:context=".BookAppointmentActivity">
+    tools:context=".BuyMedicineBookActivity">
 
-    <Button
-        android:id="@+id/buttonAppTime"
-        style="?android:spinnerStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="10.00"
-        app:layout_constraintBottom_toTopOf="@+id/buttonBookAppointment"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.77"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextAppFee"
-        app:layout_constraintVertical_bias="0.764" />
 
     <EditText
-        android:id="@+id/editTextAppContactNumber"
+        android:id="@+id/editTextBMBPinCode"
         android:layout_width="294dp"
         android:layout_height="46dp"
         android:layout_marginTop="304dp"
         android:background="@drawable/input_bg"
-        android:drawableLeft="@drawable/ic_baseline_email_24"
+        android:drawableLeft="@drawable/ic_baseline_person_24"
         android:drawablePadding="10dp"
         android:ems="10"
-        android:hint="Contact Number"
-        android:inputType="textPersonName"
+        android:hint="Pin Code"
+        android:inputType="textPassword"
         android:textColorHint="#fff"
         android:paddingLeft="20dp"
         android:paddingTop="10dp"
@@ -46,7 +35,7 @@
         app:layout_constraintVertical_bias="0.136" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/editTextLTBHealthcare"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="24*7 Healthcare"
@@ -62,22 +51,21 @@
 
 
     <TextView
-        android:id="@+id/textViewAppTitle"
+        android:id="@+id/textViewBMBPackageName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Book Appointment"
-        android:textColor="#fff"
-        android:textSize="34sp"
+        android:text="Please Fill All Details for Booking"
+        android:textColor="#CDDC39"
+        android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.174" />
+        app:layout_constraintVertical_bias="0.169" />
 
     <EditText
-        android:id="@+id/editTextAppFullName"
+        android:id="@+id/editTextBMBFullName"
         android:layout_width="288dp"
         android:layout_height="47dp"
         android:background="@drawable/input_bg"
@@ -100,7 +88,7 @@
         app:layout_constraintVertical_bias="0.323" />
 
     <EditText
-        android:id="@+id/editTextAppAddress"
+        android:id="@+id/editTextBMBAddress"
         android:layout_width="292dp"
         android:layout_height="50dp"
         android:background="@drawable/input_bg"
@@ -123,97 +111,43 @@
         app:layout_constraintVertical_bias="0.417" />
 
     <EditText
-        android:id="@+id/editTextAppFee"
-        android:layout_width="291dp"
-        android:layout_height="41dp"
+        android:id="@+id/editTextBMBContactNumber"
+        android:layout_width="294dp"
+        android:layout_height="46dp"
         android:layout_marginTop="304dp"
         android:background="@drawable/input_bg"
-        android:drawableLeft="@drawable/ic_baseline_person_24"
+        android:drawableLeft="@drawable/ic_baseline_email_24"
         android:drawablePadding="10dp"
         android:ems="10"
-
-        android:hint="Fee"
-        android:inputType="textPersonName"
+        android:hint="Contact Number"
+        android:inputType="textEmailAddress"
+        android:textColorHint="#fff"
         android:paddingLeft="20dp"
         android:paddingTop="10dp"
         android:paddingRight="10dp"
         android:paddingBottom="10dp"
         android:textColor="#fff"
-        android:textColorHint="#fff"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.486"
+        app:layout_constraintHorizontal_bias="0.47"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.306" />
+        app:layout_constraintVertical_bias="0.33" />
 
     <Button
-        android:id="@+id/buttonBookAppointment"
+        android:id="@+id/buttonBMBBooking"
         android:layout_width="292dp"
 
         android:layout_height="52dp"
         android:layout_marginTop="420dp"
-        android:text="BookAppointment"
-        app:layout_constraintBottom_toTopOf="@+id/buttonAppBack"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.462"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.89" />
-
-    <Button
-        android:id="@+id/buttonAppBack"
-        android:layout_width="292dp"
-
-        android:layout_height="52dp"
-        android:text="Back"
+        android:text="Book"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.462"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.976" />
+        app:layout_constraintVertical_bias="0.409" />
 
-
-    <TextView
-        android:id="@+id/textBMCartView4"
-        android:layout_width="83dp"
-        android:layout_height="20dp"
-        android:text="Select Date"
-        android:textColor="#FFC107"
-        app:layout_constraintBottom_toTopOf="@+id/buttonBookAppointment"
-        app:layout_constraintEnd_toStartOf="@+id/textView4"
-        app:layout_constraintHorizontal_bias="0.338"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextAppFee"
-        app:layout_constraintVertical_bias="0.233" />
-
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Select Time"
-        android:textColor="#FFC107"
-        app:layout_constraintBottom_toTopOf="@+id/buttonAppTime"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.78"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextAppFee"
-        app:layout_constraintVertical_bias="0.609" />
-
-    <Button
-        android:id="@+id/buttonAppDate"
-        style="?android:spinnerStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:text="27/10/2022"
-        app:layout_constraintBottom_toTopOf="@+id/buttonBookAppointment"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.19"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textBMCartView4"
-        app:layout_constraintVertical_bias="1.0" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

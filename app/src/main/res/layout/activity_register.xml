@@ -63,7 +63,7 @@
 
 
     <EditText
-        android:id="@+id/editTextLTBFullName"
+        android:id="@+id/editTextBMBFullName"
         android:layout_width="288dp"
         android:layout_height="47dp"
         android:background="@drawable/input_bg"

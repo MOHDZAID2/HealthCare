@@ -10,46 +10,57 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 
-public class CartLabActivity extends AppCompatActivity {
-    HashMap<String, String> item;
-    ArrayList<HashMap<String, String>> list;
+public class CartBuyMedicineActivity extends AppCompatActivity {
+
+    HashMap<String,String> item;
+    ArrayList list;
     SimpleAdapter sa;
     TextView tvTotal;
     ListView lst;
     private DatePickerDialog datePickerDialog;
     private TimePickerDialog timePickerDialog;
     private Button dateButton, timeButton, btnCheckout, btnBack;
-    private String[][] packages;
+    private String[][] packages ={};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cart_lab);
+        EdgeToEdge.enable(this);
+        setContentView(R.layout.activity_cart_buy_medicine);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
+
 
         dateButton = findViewById(R.id.buttonBMCartDate);
-        timeButton = findViewById(R.id.buttonCartTime);
+        //timeButton = findViewById(R.id.buttonCartTime);
         btnCheckout = findViewById(R.id.buttonBMCartCheckOut);
         btnBack = findViewById(R.id.buttonBMCartBack);
         tvTotal = findViewById(R.id.textViewBMCartTotalCost);
         lst = findViewById(R.id.listViewBmCart);
 
         SharedPreferences sharedPreferences = getSharedPreferences("shared_prefs", Context.MODE_PRIVATE);
-        String username = sharedPreferences.getString("username", "");
+        String username = sharedPreferences.getString("username", "").toString();
 
         // Update this line to use the correct Database constructor
         Database db = new Database(getApplicationContext(), "healthcare", null, 1);
 
         float totalAmount = 0;
         ArrayList<String> dbData = db.getCartData(username, "lab");
-        Toast.makeText(getApplicationContext(), "" + dbData, Toast.LENGTH_SHORT).show();
+       // Toast.makeText(getApplicationContext(), "" + dbData, Toast.LENGTH_SHORT).show();
 
         packages = new String[dbData.size()][5];
         for (int i = 0; i < dbData.size(); i++) {
@@ -81,40 +92,28 @@ public class CartLabActivity extends AppCompatActivity {
                 new int[]{R.id.line_a, R.id.line_b, R.id.line_c, R.id.line_d, R.id.line_e});
 
         lst.setAdapter(sa);
-        btnBack.setOnClickListener(v -> startActivity(new Intent(CartLabActivity.this, LabTestActivity.class)));
+        btnBack.setOnClickListener(v -> startActivity(new Intent(CartBuyMedicineActivity.this, BuyMedicineActivity.class)));
 
         btnCheckout.setOnClickListener(v -> {
-            Intent it = new Intent(CartLabActivity.this, LabTestBookActivity.class);
+            Intent it = new Intent(CartBuyMedicineActivity.this, BuyMedicineBookActivity.class);
             it.putExtra("price", tvTotal.getText());
             it.putExtra("date", dateButton.getText());
-            it.putExtra("time", timeButton.getText());
             startActivity(it);
-        });
+            });
 
-        // Initialize DatePickerDialog
-        datePickerDialog = new DatePickerDialog(
-                this,
-                (view, year, month, dayOfMonth) -> {
-                    dateButton.setText(dayOfMonth + "/" + (month + 1) + "/" + year);
-                },
-                Calendar.getInstance().get(Calendar.YEAR),
-                Calendar.getInstance().get(Calendar.MONTH),
-                Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
+            // Initialize DatePickerDialog
+            datePickerDialog = new DatePickerDialog(
+                    this,
+                    (view, year, month, dayOfMonth) -> {
+                        dateButton.setText(dayOfMonth + "/" + (month + 1) + "/" + year);
+                    },
+                    Calendar.getInstance().get(Calendar.YEAR),
+                    Calendar.getInstance().get(Calendar.MONTH),
+                    Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
         );
 
-        // Initialize TimePickerDialog
-        timePickerDialog = new TimePickerDialog(
-                this,
-                (view, hourOfDay, minute) -> {
-                    timeButton.setText(hourOfDay + ":" + minute);
-                },
-                Calendar.getInstance().get(Calendar.HOUR_OF_DAY),
-                Calendar.getInstance().get(Calendar.MINUTE),
-                false
-        );
+            dateButton.setOnClickListener(v -> datePickerDialog.show());
 
-        // Set onClickListener for date and time pickers
-        dateButton.setOnClickListener(v -> datePickerDialog.show());
-        timeButton.setOnClickListener(v -> timePickerDialog.show());
+
     }
 }

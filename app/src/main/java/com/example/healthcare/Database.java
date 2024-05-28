@@ -12,22 +12,18 @@ import java.util.ArrayList;
 
 public class Database extends SQLiteOpenHelper {
 
-    private static final String DATABASE_NAME = "healthcare.db";
-    private static final int DATABASE_VERSION = 1;
-
-    public Database(@Nullable Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+   private static final String name = "healthcare.db";
+  private static final int version= 1;
+    private static final SQLiteDatabase.CursorFactory factory= null;
+    public Database(@Nullable Context context, String healthcare, Object o, int i) {
+        super(context, name, factory, version);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
         // Create the "user" table
-        String createTable = "CREATE TABLE IF NOT EXISTS user ("
-                + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + "username TEXT, "
-                + "email TEXT, "
-                + "password TEXT)";
-        db.execSQL(createTable);
+      String qry1 = "create table users(username text,email text,password text)";
+        db.execSQL(qry1);
 
         String qry2 = "create table cart(username text,product text,price float,otype text)";
         db.execSQL(qry2);
@@ -113,12 +109,12 @@ public class Database extends SQLiteOpenHelper {
         return arr;
     }
 
-    public void addOrder(String username, String fullname, String address, String contact, int pincode, String date, String time, float price, String otype) {
+    public void addOrder(String username, String fullname,String address, String contact, int pincode, String date, String time, float price, String otype) {
         ContentValues cv = new ContentValues();
         cv.put("username", username);
         cv.put("fullname", fullname);
         cv.put("address", address);
-        cv.put("contact", contact);
+        cv.put("contactno", contact);
         cv.put("pincode", pincode);
         cv.put("date", date);
         cv.put("time", time);
@@ -129,18 +125,38 @@ public class Database extends SQLiteOpenHelper {
         db.close();
     }
 
-    public ArrayList<String> getOrderData(String username) {
+    public ArrayList getOrderData(String username) {
         ArrayList<String> arr = new ArrayList<>();
         SQLiteDatabase db = getReadableDatabase();
-        String[] str = new String[]{username};
+        String[] str = new String[1];
+        str[0]=username;
         Cursor c = db.rawQuery("select * from orderplace where username = ?", str);
         if (c.moveToFirst()) {
             do {
-                arr.add(c.getString(1) + "$" + c.getString(2) + "$" + c.getString(3) + "$" + c.getString(4) + "$" + c.getString(5) + "$" + c.getString(6) + "$" + c.getString(7));
+                arr.add(c.getString(1) + "$" + c.getString(2) + "$" + c.getString(3) + "$" + c.getString(4) + "$" + c.getString(5) + "$" + c.getString(6) + "$" + c.getString(7) + "$" + c.getString(8));
             } while (c.moveToNext());
         }
         c.close();
         db.close();
         return arr;
     }
+
+    public int checkAppointmentExists(String username,String fullname,String address,String contact,String date,String time){
+        int result=0;
+        String str[] = new String[6];
+        str[0] = username;
+        str[1] = fullname;
+        str[2] = address;
+        str[3] = contact;
+        str[4] = date;
+        str[5] = time;
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor c = db.rawQuery("select * from orderplace where username = ? and fulname = ? and address = ? and contactno = ? and date = ? and time = ?",str);
+        if (c.moveToFirst()){
+            result=1;
+        }
+        db.close();
+        return result;
+    }
+
 }

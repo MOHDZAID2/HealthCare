@@ -1,9 +1,12 @@
 package com.example.healthcare;
 
-import android.app.AlertDialog;
+import static android.app.AlertDialog.THEME_HOLO_DARK;
+
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -16,10 +19,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 public class BookAppointmentActivity extends AppCompatActivity {
 
@@ -91,10 +91,17 @@ public class BookAppointmentActivity extends AppCompatActivity {
             }
         });
 
-        btnBook.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        btnBook.setOnClickListener(v -> {
 
+            Database db = new Database(getApplicationContext(), "healthcare", null, 1);
+            SharedPreferences sharedPreferences = getSharedPreferences("shared_prefs", Context.MODE_PRIVATE);
+            String username = sharedPreferences.getString("username", "").toString();
+            if (db.checkAppointmentExists(username,title+" => "+fullname,address,contact,dateButton.getText().toString(),timeButton.getText().toString())==1){
+                Toast.makeText(BookAppointmentActivity.this, "Appointment already booked", Toast.LENGTH_SHORT).show();
+            }else {
+                db.addOrder(username,title+" => "+fullname,address,contact,0,dateButton.getText().toString(),timeButton.getText().toString(),Float.parseFloat(fees),"appointment");
+                Toast.makeText(BookAppointmentActivity.this, "Your appointment is done successfully", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(BookAppointmentActivity.this,HomeActivity.class));
             }
         });
 
@@ -114,7 +121,7 @@ public class BookAppointmentActivity extends AppCompatActivity {
         int month = cal.get(Calendar.MONTH);
         int day = cal.get(Calendar.DAY_OF_MONTH);
 
-        int style = AlertDialog.THEME_HOLO_DARK;
+        int style = THEME_HOLO_DARK;
         datePickerDialog = new DatePickerDialog(this,style,dateSetListener,year,month,day);;
         datePickerDialog.getDatePicker().setMinDate(cal.getTimeInMillis()+86400000);
     }
@@ -133,7 +140,7 @@ public class BookAppointmentActivity extends AppCompatActivity {
         int hrs = cal.get(Calendar.HOUR);
         int mins = cal.get(Calendar.MINUTE);
 
-        int style = AlertDialog.THEME_HOLO_DARK;
+        int style = THEME_HOLO_DARK;
         timePickerDialog = new TimePickerDialog(this,style,timeSetListener,hrs,mins,true);
     }
 }

@@ -23,11 +23,11 @@ public class LabTestDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lab_test_details);
 
-        tvPackageName = findViewById(R.id.textViewLDPackageName);
-        tvTotalCost = findViewById(R.id.textViewLDTotalCost);
-        edDetails = findViewById(R.id.editTextLDTextMultiLine);
-        btnAddToCart = findViewById(R.id.buttonLDAddToCart);
-        btnBack = findViewById(R.id.buttonLDBack);
+        tvPackageName = findViewById(R.id.textViewBMDPackageName);
+        tvTotalCost = findViewById(R.id.textViewBMDTotalCost);
+        edDetails = findViewById(R.id.editTextBMDTextMultiLine);
+        btnAddToCart = findViewById(R.id.buttonBMDAddToCart);
+        btnBack = findViewById(R.id.buttonBMDBack);
 
         edDetails.setKeyListener(null);
 
@@ -51,7 +51,7 @@ public class LabTestDetailsActivity extends AppCompatActivity {
                 String product = tvPackageName.getText().toString();
                 float price = Float.parseFloat(intent.getStringExtra("text3").toString());
 
-                Database db = new Database(getApplicationContext()); // Correctly initialize the Database instance
+                Database db = new Database(getApplicationContext(), "healthcare", null, 1); // Correctly initialize the Database instance
 
                 if (db.checkCart(username, product) == 1) {
                     Toast.makeText(LabTestDetailsActivity.this, "Product Already Added", Toast.LENGTH_SHORT).show();

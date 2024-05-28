@@ -11,10 +11,7 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 
 public class DoctorDetailsActivity extends AppCompatActivity {
@@ -80,8 +77,8 @@ HashMap<String,String> item;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_doctor_details);
 
-        tv = findViewById(R.id.textViewDDTitle);
-        btn = findViewById(R.id.buttonDDBack);
+        tv = findViewById(R.id.textViewHADTitle);
+        btn = findViewById(R.id.buttonHADBack);
         Intent it = getIntent();
         String tittle = it.getStringExtra("tittle");
         tv.setText(tittle);
@@ -125,7 +122,7 @@ HashMap<String,String> item;
         {"line1","line2","line3","line4","line5"},
                 new int[]{R.id.line_a, R.id.line_b, R.id.line_c, R.id.line_d, R.id.line_e}
                 );
-        ListView lst = findViewById(R.id.listViewDD);
+        ListView lst = findViewById(R.id.listViewHA);
         lst.setAdapter(sa);
 
      lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
